@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a0f18" />
+  <meta name="description" content="Find lower prices and nearby sales without creating an account or storing your location." />
+  <title>Price Radar</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div class="brand">
+        <div class="radar-dot" aria-hidden="true"></div>
+        <span>PRICE RADAR</span>
+      </div>
+      <h1>Find it cheaper nearby.</h1>
+      <p>Scan a barcode, enter one manually, or describe what you want. Your location stays in this browser session.</p>
+    </header>
+
+    <section class="location-card" id="locationCard">
+      <div>
+        <strong id="locationTitle">Nearby prices are off</strong>
+        <p id="locationText">Use your location to rank stores and prices near you. We do not save it.</p>
+      </div>
+      <button id="locationBtn" class="secondary">Use my location</button>
+    </section>
+
+    <section class="search-card">
+      <div class="tabs" role="tablist" aria-label="Search method">
+        <button class="tab active" data-mode="describe">Describe</button>
+        <button class="tab" data-mode="barcode">Barcode</button>
+        <button class="tab" data-mode="scan">Scan</button>
+      </div>
+
+      <div id="describePanel" class="panel active">
+        <label for="descriptionInput">What are you looking for?</label>
+        <div class="search-row">
+          <input id="descriptionInput" type="search" placeholder="e.g. 32 oz Tide Free & Gentle" autocomplete="off" />
+          <button class="primary search-btn" data-source="describe">Search</button>
+        </div>
+      </div>
+
+      <div id="barcodePanel" class="panel">
+        <label for="barcodeInput">UPC / EAN</label>
+        <div class="search-row">
+          <input id="barcodeInput" inputmode="numeric" placeholder="Enter barcode number" autocomplete="off" />
+          <button class="primary search-btn" data-source="barcode">Search</button>
+        </div>
+      </div>
+
+      <div id="scanPanel" class="panel">
+        <div class="scanner">
+          <video id="video" playsinline muted></video>
+          <div class="scan-frame" aria-hidden="true"></div>
+          <p id="scanStatus">Camera stays on your device. Nothing is uploaded.</p>
+          <button id="scanBtn" class="primary">Start scanner</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="status" id="status" aria-live="polite"></section>
+
+    <section id="resultsSection" class="results hidden">
+      <div class="results-head">
+        <div>
+          <p class="eyebrow">RESULTS</p>
+          <h2 id="resultTitle">Matches</h2>
+        </div>
+        <button id="sortBtn" class="ghost">Sort: price</button>
+      </div>
+      <div id="resultsList"></div>
+      <p class="demo-note">Demo results for the MVP interface. Live retailer data comes next.</p>
+    </section>
+
+    <footer>
+      <p><strong>Privacy by default.</strong> No accounts, analytics, cookies, saved searches, or stored location.</p>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
