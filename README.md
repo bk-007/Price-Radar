@@ -1,16 +1,35 @@
 # Price Radar
 
-A privacy-first web app for finding lower prices and nearby sales.
+A privacy-first, zero-paid-API web app for comparing prices.
 
-## What it does
+## Current approach
 
-- Search by plain-language product description
-- Enter a UPC / EAN manually
-- Scan barcodes with the phone camera when the browser supports `BarcodeDetector`
-- Optionally use browser location to rank nearby prices
-- Avoid storing personal data
+Price Radar no longer pretends to have live retailer pricing.
 
-## Privacy model
+Instead it:
+1. accepts a product description or barcode,
+2. opens targeted retailer searches,
+3. lets the user add matching prices they find,
+4. sorts those observations from lowest to highest,
+5. keeps all observations only in the current browser session.
+
+This avoids paid shopping APIs, API overage risk, accounts, tracking, and a backend.
+
+## Retailer adapters
+
+Retailer URL builders live in `retailers.js`. Adding another retailer is just another adapter with a name and search URL builder.
+
+Current adapters:
+- Walmart
+- Target
+- Amazon
+- Best Buy
+- Home Depot
+- Lowe's
+- CVS
+- Walgreens
+
+## Privacy
 
 Price Radar currently has:
 - no accounts
@@ -18,35 +37,31 @@ Price Radar currently has:
 - no advertising trackers
 - no cookies
 - no saved searches
+- no persistent price history
 - no persisted location
 - no uploaded camera images
+- no paid shopping APIs
 
-Location is requested only after the user taps **Use my location**. Coordinates live only in JavaScript memory for the current page session.
+Location is optional and lives only in JavaScript memory for the current page session.
 
-See [privacy.md](privacy.md) for details.
+Price observations are also memory-only and disappear on refresh.
 
-## Current state
+## Barcode scanning
 
-The interface and privacy/location/barcode flows are working. Price results are demo data until live retailer/product providers are connected.
+Where supported, the browser's `BarcodeDetector` API reads UPC/EAN codes locally from the camera feed. Images are not uploaded.
 
-## Run it
+## Why retailer pages are not scraped directly
 
-This MVP is plain HTML, CSS, and JavaScript. Serve the repository over HTTPS for camera and geolocation access.
+Browsers generally block cross-origin page access, and retailer sites frequently use anti-bot protections. This MVP therefore uses retailer search links instead of pretending browser-side scraping will be reliable.
 
-For local development, any simple static server works, for example:
+A later version can add a small self-hosted fetch layer or voluntary community price submissions without changing the retailer-adapter model.
+
+## Run locally
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Then open `http://localhost:8000`.
-
-## Next build step
-
-Add a provider layer for:
-1. UPC/product identification
-2. retailer pricing and inventory
-3. nearby-store search
-4. normalization for unit price, sale price, distance, and availability
+Open `http://localhost:8000`.
 
 Built by Bryce.
