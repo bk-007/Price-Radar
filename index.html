@@ -4,41 +4,38 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0a0f18" />
-  <meta name="description" content="Find lower prices and nearby sales without creating an account or storing your location." />
+  <meta name="description" content="Compare prices without accounts, tracking, or paid shopping APIs." />
   <title>Price Radar</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <main class="shell">
     <header class="hero">
-      <div class="brand">
-        <div class="radar-dot" aria-hidden="true"></div>
-        <span>PRICE RADAR</span>
-      </div>
-      <h1>Find it cheaper nearby.</h1>
-      <p>Scan a barcode, enter one manually, or describe what you want. Your location stays in this browser session.</p>
+      <div class="brand"><div class="radar-dot"></div><span>PRICE RADAR</span></div>
+      <h1>Find it cheaper.</h1>
+      <p>Scan it, describe it, check stores, then compare the prices you find. No account. No tracking. No API roulette.</p>
     </header>
 
     <section class="location-card" id="locationCard">
       <div>
-        <strong id="locationTitle">Nearby prices are off</strong>
-        <p id="locationText">Use your location to rank stores and prices near you. We do not save it.</p>
+        <strong id="locationTitle">Nearby mode is off</strong>
+        <p id="locationText">Location is optional and stays in memory only for this browser session.</p>
       </div>
       <button id="locationBtn" class="secondary">Use my location</button>
     </section>
 
     <section class="search-card">
-      <div class="tabs" role="tablist" aria-label="Search method">
+      <div class="tabs">
         <button class="tab active" data-mode="describe">Describe</button>
         <button class="tab" data-mode="barcode">Barcode</button>
         <button class="tab" data-mode="scan">Scan</button>
       </div>
 
       <div id="describePanel" class="panel active">
-        <label for="descriptionInput">What are you looking for?</label>
+        <label for="descriptionInput">What are you shopping for?</label>
         <div class="search-row">
-          <input id="descriptionInput" type="search" placeholder="e.g. 32 oz Tide Free & Gentle" autocomplete="off" />
-          <button class="primary search-btn" data-source="describe">Search</button>
+          <input id="descriptionInput" type="search" placeholder="e.g. Tide Free & Gentle 32 oz" autocomplete="off" />
+          <button class="primary search-btn" data-source="describe">Compare</button>
         </div>
       </div>
 
@@ -46,15 +43,15 @@
         <label for="barcodeInput">UPC / EAN</label>
         <div class="search-row">
           <input id="barcodeInput" inputmode="numeric" placeholder="Enter barcode number" autocomplete="off" />
-          <button class="primary search-btn" data-source="barcode">Search</button>
+          <button class="primary search-btn" data-source="barcode">Compare</button>
         </div>
       </div>
 
       <div id="scanPanel" class="panel">
         <div class="scanner">
           <video id="video" playsinline muted></video>
-          <div class="scan-frame" aria-hidden="true"></div>
-          <p id="scanStatus">Camera stays on your device. Nothing is uploaded.</p>
+          <div class="scan-frame"></div>
+          <p id="scanStatus">Camera processing stays on your device.</p>
           <button id="scanBtn" class="primary">Start scanner</button>
         </div>
       </div>
@@ -62,23 +59,50 @@
 
     <section class="status" id="status" aria-live="polite"></section>
 
-    <section id="resultsSection" class="results hidden">
+    <section id="workspace" class="hidden">
       <div class="results-head">
         <div>
-          <p class="eyebrow">RESULTS</p>
-          <h2 id="resultTitle">Matches</h2>
+          <p class="eyebrow">PRICE CHECK</p>
+          <h2 id="resultTitle">Product</h2>
         </div>
-        <button id="sortBtn" class="ghost">Sort: price</button>
       </div>
-      <div id="resultsList"></div>
-      <p class="demo-note">Demo results for the MVP interface. Live retailer data comes next.</p>
+
+      <section class="store-launcher">
+        <h3>Check retailers</h3>
+        <p class="section-copy">Open a few stores, find the matching item, then add the price below. Price Radar handles the comparison.</p>
+        <div id="retailerGrid" class="retailer-grid"></div>
+      </section>
+
+      <section class="observation-card">
+        <h3>Add a price you found</h3>
+        <div class="observation-form">
+          <label>Store<input id="storeInput" placeholder="Walmart" /></label>
+          <label>Price<input id="priceInput" type="number" inputmode="decimal" min="0" step="0.01" placeholder="7.94" /></label>
+          <label class="wide">Note<input id="noteInput" placeholder="Sale, delivery, 2.1 mi away..." /></label>
+          <button id="addPriceBtn" class="primary wide">Add price</button>
+        </div>
+      </section>
+
+      <section class="results">
+        <div class="results-head compact">
+          <div>
+            <p class="eyebrow">OBSERVED PRICES</p>
+            <h3 id="observationCount">No prices yet</h3>
+          </div>
+          <button id="clearBtn" class="ghost">Clear</button>
+        </div>
+        <div id="resultsList"></div>
+        <p class="demo-note">Prices are session-only observations. Refreshing the page clears them.</p>
+      </section>
     </section>
 
     <footer>
-      <p><strong>Privacy by default.</strong> No accounts, analytics, cookies, saved searches, or stored location.</p>
+      <p><strong>Privacy by default.</strong> No accounts, analytics, cookies, saved searches, stored location, or paid price APIs.</p>
     </footer>
   </main>
 
+  <script src="retailers.js"></script>
+  <script src="observations.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
